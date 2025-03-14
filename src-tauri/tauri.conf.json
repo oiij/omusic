@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "tauri-starter",
+  "version": "0.1.0",
+  "identifier": "com.tauri-starter.app",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:5678",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "macOSPrivateApi": true,
+    "windows": [
+      {
+        "title": "tauri-starter",
+        "label": "main",
+        "width": 800,
+        "height": 600,
+        "center": true,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": false,
+        "transparent": true,
+        "titleBarStyle": "Visible",
+        "hiddenTitle": true,
+        "visible": false
+      },{
+        "title": "Loading",
+        "label": "loading",
+        "url": "loading",
+        "width": 134,
+        "height": 100,
+        "center": true,
+        "resizable":false,
+        "fullscreen": false,
+        "decorations": false,
+        "transparent": true,
+        "titleBarStyle": "Visible",
+        "hiddenTitle": true,
+        "visible": true,
+        "shadow": false
+
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
