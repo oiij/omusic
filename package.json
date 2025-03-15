@@ -1,12 +1,12 @@
 {
-  "name": "tauri-starter",
+  "name": "omusic",
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "description": "tauri-starter",
+  "description": "omusic",
   "author": "oiij",
   "license": "MIT",
-  "homepage": "https://github.com/oiij/tauri-starter",
+  "homepage": "https://github.com/oiij/omusic",
   "scripts": {
     "dev": "vite",
     "tauri:dev": "tauri dev",
@@ -56,7 +56,9 @@
     "axios": "^1.7.9",
     "axios-tauri-fetch-adapter": "^0.1.2",
     "colord": "^2.9.3",
+    "colorthief": "^2.6.0",
     "mixte": "3.2.0",
+    "music-metadata": "^11.0.2",
     "nanoid": "^5.1.0",
     "notivue": "^2.4.5",
     "nprogress": "^0.2.0",
@@ -70,6 +72,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.2.0",
+    "@iconify-json/iconamoon": "^1.2.2",
     "@iconify-json/mage": "^1.2.2",
     "@intlify/unplugin-vue-i18n": "^6.0.3",
     "@oiij/tsconfig": "^0.0.1",

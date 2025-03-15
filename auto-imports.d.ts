@@ -233,6 +233,7 @@ declare global {
   const useKeyModifier: typeof import('@vueuse/core')['useKeyModifier']
   const useLanguage: typeof import('./src/composables/useLanguage')['useLanguage']
   const useLastChanged: typeof import('@vueuse/core')['useLastChanged']
+  const useLibrary: typeof import('./src/composables/useLibrary')['useLibrary']
   const useLoading: typeof import('./src/composables/useLoading')['useLoading']
   const useLocalStorage: typeof import('@vueuse/core')['useLocalStorage']
   const useLocalStorageRef: typeof import('./src/composables/useLocalStorageRef')['useLocalStorageRef']
@@ -316,7 +317,7 @@ declare global {
   const useTauriDialog: typeof import('./src/composables/useTauriDialog')['useTauriDialog']
   const useTauriFS: typeof import('./src/composables/useTauriFS')['useTauriFS']
   const useTauriNotifications: typeof import('./src/composables/useTauriNotifications')['useTauriNotifications']
-  const useTauriStore: typeof import('./src/composables/useTauriStore')['useTauriStore']
+  const useTauriStore: typeof import('./src/composables/useLibrary')['useTauriStore']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
   const useTemplateRefsList: typeof import('@vueuse/core')['useTemplateRefsList']
   const useTextDirection: typeof import('@vueuse/core')['useTextDirection']
@@ -592,6 +593,7 @@ declare module 'vue' {
     readonly useIntervalFn: UnwrapRef<typeof import('@vueuse/core')['useIntervalFn']>
     readonly useKeyModifier: UnwrapRef<typeof import('@vueuse/core')['useKeyModifier']>
     readonly useLastChanged: UnwrapRef<typeof import('@vueuse/core')['useLastChanged']>
+    readonly useLibrary: UnwrapRef<typeof import('./src/composables/useLibrary')['useLibrary']>
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>
     readonly useManualRefHistory: UnwrapRef<typeof import('@vueuse/core')['useManualRefHistory']>
@@ -629,6 +631,7 @@ declare module 'vue' {
     readonly usePrevious: UnwrapRef<typeof import('@vueuse/core')['usePrevious']>
     readonly useRafFn: UnwrapRef<typeof import('@vueuse/core')['useRafFn']>
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>
+    readonly useRequest: UnwrapRef<typeof import('vue-hooks-plus')['useRequest']>
     readonly useResizeObserver: UnwrapRef<typeof import('@vueuse/core')['useResizeObserver']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouteGuard: UnwrapRef<typeof import('./src/composables/useRouterGuard')['useRouteGuard']>
