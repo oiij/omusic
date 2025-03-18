@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 const { size = 40, name = 'play' } = defineProps<{
   size?: number
-  name: keyof typeof icons
+  name?: keyof typeof icons
 }>()
 const emit = defineEmits<{
   (e: 'click', ev: MouseEvent): void

@@ -7,11 +7,11 @@ import { router, useLanguage } from '~/modules'
 export const useAppStore = defineStore(
   'appStore',
   () => {
+    const player = usePlayer()
     const { locale, language } = useLanguage()
     const { isDark, preferredDark, colorMode } = useTheme()
     const { color, theme, themeOverrides, locale: naiveLocal, dateLocale } = useNaiveTheme(isDark, locale)
     const { value: collapsed, toggle: toggleCollapsed } = useBoolean(false)
-    const { value: playerCollapsed, toggle: togglePlayerCollapsed } = useBoolean(false)
     async function initTauriEventListen() {
       await listen('open-setting', () => {
         router.push('/setting')
@@ -24,6 +24,7 @@ export const useAppStore = defineStore(
     }
     init()
     return {
+      ...player,
       locale,
       language,
       isDark,
@@ -36,8 +37,6 @@ export const useAppStore = defineStore(
       dateLocale,
       collapsed,
       toggleCollapsed,
-      playerCollapsed,
-      togglePlayerCollapsed,
     }
   },
   {

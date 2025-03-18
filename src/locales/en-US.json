@@ -6,5 +6,8 @@
     }
   },
   "Hello": "Hello World !",
+  "MEDIA": {
+    "TITLE": "MediaLibrary"
+  },
   "Welcome": "Welcome Use This Template"
 }
