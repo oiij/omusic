@@ -1,10 +1,6 @@
 <script setup lang='ts'>
 import { getCurrentWindow } from '@tauri-apps/api/window'
 
-const { title, showMaximizeButton = true } = defineProps<{
-  title?: string | null
-  showMaximizeButton?: boolean
-}>()
 const isFullscreen = ref(false)
 const window = getCurrentWindow()
 async function onMinimize() {
@@ -26,27 +22,23 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-[28px] w-full flex">
-    <div class="flex-y-center flex-1" data-tauri-drag-region>
-      <slot name="title">
-        <div v-if="title" class="pointer-events-none select-none p-x-3">
-          {{ title }}
-        </div>
-      </slot>
+  <div class="fixed-lt z-9 h-[22px] w-full flex">
+    <div class="group wh-full flex items-center justify-center" data-tauri-drag-region>
+      <div class="pointer-events-none h-[6px] w-[120px] rounded-full bg-transparent transition-base group-hover:bg-black/20" />
     </div>
-    <div class="flex-y-center">
+    <div class="absolute-rt h-full flex-y-center">
       <slot name="actions">
-        <n-button quaternary size="small" type="default" class="rounded-0!" @click="onMinimize">
+        <n-button quaternary size="tiny" type="default" class="rounded-0!" @click="onMinimize">
           <template #icon>
             <i class="i-mage-minus" />
           </template>
         </n-button>
-        <n-button v-if="showMaximizeButton" quaternary size="small" type="default" class="rounded-0!" @click="toggleFullScreen">
+        <n-button quaternary size="tiny" type="default" class="rounded-0!" @click="toggleFullScreen">
           <template #icon>
             <i :class="isFullscreen ? 'i-mage-scale-down' : 'i-mage-scale-up'" />
           </template>
         </n-button>
-        <n-button quaternary size="small" type="error" class="rounded-0!" @click="onClose">
+        <n-button quaternary size="tiny" type="error" class="rounded-0!" @click="onClose">
           <template #icon>
             <i class="i-mage-multiply" />
           </template>

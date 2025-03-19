@@ -9,6 +9,7 @@
     </main>
     <Player />
     <MiniPlayer />
+    <AppBar />
   </div>
 </template>
 

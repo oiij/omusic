@@ -5,10 +5,11 @@ import { useAudioContext } from './useAudioContext'
 
 const { value: loading, setTrue: setLoading, setFalse: removeLoading } = useBoolean()
 const { value: playerCollapsed, toggle: togglePlayerCollapsed } = useBoolean(false)
-const { playing, duration, currentTime, playBufferSource, pause, resume, stop, onByteTimeDomainData } = useAudioContext()
-const playList = ref<MediaLibrary[]>([])
+const { playing, duration, currentTime, playBuffer, pause, resume, stop, onByteTimeDomainData, progress, setProgress, volume } = useAudioContext()
+const playList = shallowRef<MediaLibrary[]>([])
 const currentPath = ref()
 const current = computed(() => playList.value.find(f => f.path === currentPath.value))
+const playMode = ref<'repeat' | 'repeat-one' | 'shuffle'>('repeat')
 onByteTimeDomainData((_array) => {
 
 })
@@ -18,13 +19,13 @@ function add(media: MediaLibrary) {
     playList.value.push(media)
   }
 }
-async function play(media: MediaLibrary) {
+async function handlePlay(media: MediaLibrary) {
   try {
     setLoading()
     add(media)
     currentPath.value = media.path
     const unit8Array = await readFile(media.path) as Uint8Array<ArrayBuffer>
-    playBufferSource(unit8Array)
+    playBuffer(unit8Array)
 
     removeLoading()
   }
@@ -41,12 +42,16 @@ export function usePlayer() {
     playList,
     currentPath,
     current,
-    play,
+    handlePlay,
     duration,
     currentTime,
     playing,
     pause,
     resume,
     stop,
+    progress,
+    setProgress,
+    volume,
+    playMode,
   }
 }

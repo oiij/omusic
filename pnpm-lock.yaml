@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@oiij/directives':
-        specifier: ^0.0.2
-        version: 0.0.2(vue@3.5.13(typescript@5.8.2))
+        specifier: ^0.0.4
+        version: 0.0.4(vue@3.5.13(typescript@5.8.2))
       '@oiij/naive-ui':
         specifier: ^0.0.1
         version: 0.0.1
@@ -1884,8 +1884,8 @@ packages:
     resolution: {integrity: sha512-uCpcqWO6C4P5c4vi1/sq5GyajO0EOp+ZWFtPrnKaJ1pXAhA+W1aMVxAjfi2f18QMJHuRXBz1TouFg1RmWA6FuA==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
-  '@oiij/directives@0.0.2':
-    resolution: {integrity: sha512-QW2kVw8FhK7rn0r223txXdkRAdHSpDafXIEwUL4412vQMInTLcDqKz3QcVsUhGLLnTyC2C4wWesFRApp41D8NQ==}
+  '@oiij/directives@0.0.4':
+    resolution: {integrity: sha512-LYr6cSJSdwR/Uxo0LjutMwvnVGHHLka8ZIQ/bqXfWtczDMwvcbIolnSO97r0xdxcl/UYmHhGCFHGp9iJdHlDvw==}
     peerDependencies:
       vue: ^3.5.13
 
@@ -9371,7 +9371,7 @@ snapshots:
       std-env: 3.8.1
     optional: true
 
-  '@oiij/directives@0.0.2(vue@3.5.13(typescript@5.8.2))':
+  '@oiij/directives@0.0.4(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       '@oiij/utils': 0.0.1
       vue: 3.5.13(typescript@5.8.2)

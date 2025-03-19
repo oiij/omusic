@@ -17,7 +17,7 @@ definePage({
 useHead({
   title: '首页',
 })
-const { play } = usePlayer()
+const { handlePlay } = usePlayer()
 const { data, refresh } = useRequest(async () => {
   const { getAll } = await useMediaLibrary()
   return getAll()
@@ -38,7 +38,7 @@ async function handleRemove(key: string) {
   refresh()
 }
 function handlePaly(data: MediaLibrary) {
-  play(data)
+  handlePlay(data)
 }
 </script>
 

@@ -29,7 +29,7 @@
     "postinstall": "npx simple-git-hooks"
   },
   "dependencies": {
-    "@oiij/directives": "^0.0.2",
+    "@oiij/directives": "^0.0.4",
     "@oiij/naive-ui": "^0.0.1",
     "@oiij/use": "^0.0.7",
     "@oiij/utils": "^0.0.1",

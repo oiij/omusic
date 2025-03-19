@@ -9,6 +9,7 @@ interface Options {
 export function useAudioContext(options?: Options) {
   const { analyser = false } = options ?? {}
   const audioContext = new AudioContext()
+  const audioBuffer = shallowRef<AudioBuffer>()
   const bufferSource = shallowRef<AudioBufferSourceNode>()
   const mediaElementSource = shallowRef<MediaElementAudioSourceNode>()
   const mediaStreamSource = shallowRef<MediaStreamAudioSourceNode>()
@@ -18,13 +19,14 @@ export function useAudioContext(options?: Options) {
   const bufferLength = analyserNode.frequencyBinCount
   const unit8Array = new Uint8Array(bufferLength)
 
-  gainNode.connect(audioContext.destination)
+  gainNode.connect(analyserNode).connect(audioContext.destination)
 
   const status = ref<AudioContextState>(audioContext.state)
   audioContext.addEventListener('statechange', () => {
     status.value = audioContext.state
   })
   const playing = ref(false)
+  const ended = ref(false)
 
   const startFlag = ref(0)
   const pauseFlag = ref(0)
@@ -35,11 +37,12 @@ export function useAudioContext(options?: Options) {
   const durationRaw = ref(0)
   const duration = computed(() => formatTime(durationRaw.value))
 
-  const progress = computed(() => (currentTimeRaw.value / durationRaw.value) * 100)
+  const progressRaw = ref(0)
+  const progress = computed(() => Number(progressRaw.value.toFixed(0)))
 
-  const volume = ref(gainNode.gain.value)
+  const volume = ref(gainNode.gain.value * 100)
   watch(volume, (val) => {
-    gainNode.gain.value = val
+    gainNode.gain.value = val / 100
   })
 
   const loop = ref(bufferSource.value?.loop ?? false)
@@ -60,7 +63,7 @@ export function useAudioContext(options?: Options) {
       bufferSource.value.playbackRate.value = val
   })
 
-  let _onByteTimeDomainDataFn: ((array: Uint8Array<ArrayBuffer>) => void) | null = null
+  let _onByteTimeDomainDataFn: ((array: Uint8Array) => void) | null = null
   function getByteTimeDomainData() {
     analyserNode.getByteTimeDomainData(unit8Array)
     if (typeof _onByteTimeDomainDataFn === 'function') {
@@ -72,68 +75,59 @@ export function useAudioContext(options?: Options) {
     getByteTimeDomainData()
   }
 
-  function decodeAudioData(arrayBuffer: Uint8Array<ArrayBuffer>) {
-    return audioContext.decodeAudioData(arrayBuffer.buffer)
-  }
   function updateDuration() {
     const _currentTime = audioContext.currentTime - startFlag.value
     if (_currentTime >= durationRaw.value) {
+      playing.value = false
+      ended.value = true
       return
     }
     currentTimeRaw.value = _currentTime
+    progressRaw.value = (_currentTime / durationRaw.value) * 100
     requestAnimationFrame(updateDuration)
   }
 
-  async function playBufferSource(arrayBuffer: Uint8Array<ArrayBuffer>) {
-    bufferSource.value = audioContext.createBufferSource()
-    const audioBuffer = await decodeAudioData(arrayBuffer)
-    bufferSource.value.buffer = audioBuffer
-    bufferSource.value.connect(gainNode).connect(analyserNode)
-    bufferSource.value.start(0)
-
-    playing.value = true
-
-    durationRaw.value = audioBuffer.duration
-    startFlag.value = audioContext.currentTime
-
-    updateDuration()
-
-    bufferSource.value.addEventListener('ended', () => {
-      playing.value = false
-    }, { once: true })
+  function createBufferSource(audioBuffer: AudioBuffer) {
+    const bufferSource = audioContext.createBufferSource()
+    bufferSource.buffer = audioBuffer
+    bufferSource.connect(gainNode)
+    return bufferSource
   }
 
-  async function playMediaElementSource(mediaElement: HTMLMediaElement) {
-    mediaElementSource.value = audioContext.createMediaElementSource(mediaElement)
-    mediaElementSource.value.connect(gainNode)
-    mediaElementSource.value.mediaElement.play()
-
-    playing.value = true
-
-    durationRaw.value = mediaElement.duration
-    startFlag.value = audioContext.currentTime
-
-    updateDuration()
-
-    mediaElementSource.value.mediaElement.addEventListener('ended', () => {
-      playing.value = false
-    }, { once: true })
-  }
-
-  async function playMediaStreamSource(mediaStream: MediaStream) {
-    mediaStreamSource.value = audioContext.createMediaStreamSource(mediaStream)
-    mediaStreamSource.value.connect(gainNode)
-  }
-
-  async function play(_source: Uint8Array<ArrayBuffer> | HTMLMediaElement | MediaStream) {
-    if (_source instanceof Uint8Array) {
-      await playBufferSource(_source)
+  function setProgress(val: number) {
+    if (audioBuffer.value) {
+      const targetDuration = val / 100 * durationRaw.value
+      bufferSource.value?.stop()
+      bufferSource.value = createBufferSource(audioBuffer.value)
+      bufferSource.value.start(0, targetDuration)
+      startFlag.value = audioContext.currentTime - targetDuration
+      if (!playing.value) {
+        pauseFlag.value = audioContext.currentTime - startFlag.value
+      }
     }
-    if (_source instanceof HTMLMediaElement) {
-      await playMediaElementSource(_source)
-    }
-    if (_source instanceof MediaStream) {
-      await playMediaStreamSource(_source)
+  }
+
+  async function playBuffer(arrayBuffer: Uint8Array) {
+    audioBuffer.value = await audioContext.decodeAudioData(arrayBuffer.buffer as unknown as ArrayBuffer)
+    play()
+  }
+  function play() {
+    if (audioBuffer.value) {
+      bufferSource.value?.stop()
+      bufferSource.value = createBufferSource(audioBuffer.value)
+      bufferSource.value.start(0)
+
+      playing.value = true
+      ended.value = false
+
+      durationRaw.value = audioBuffer.value.duration
+      startFlag.value = audioContext.currentTime
+
+      updateDuration()
+
+      // bufferSource.value.addEventListener('ended', () => {
+      //   playing.value = false
+      // }, { once: true })
     }
   }
   function pause() {
@@ -143,6 +137,10 @@ export function useAudioContext(options?: Options) {
   }
 
   function resume() {
+    if (ended.value) {
+      play()
+      return
+    }
     audioContext.resume()
     startFlag.value = audioContext.currentTime - pauseFlag.value
     playing.value = true
@@ -154,12 +152,19 @@ export function useAudioContext(options?: Options) {
     startFlag.value = 0
     currentTimeRaw.value = 0
     playing.value = false
+    ended.value = true
   }
+  function dispose() {
+    stop()
+    bufferSource.value = undefined
+    mediaElementSource.value = undefined
+    mediaStreamSource.value = undefined
+    audioContext.close()
+  }
+
   return {
     audioContext,
     bufferSource,
-    mediaElementSource,
-    mediaStreamSource,
     gainNode,
     analyserNode,
     status,
@@ -170,22 +175,22 @@ export function useAudioContext(options?: Options) {
     currentTime,
     durationRaw,
     duration,
+    progressRaw,
     progress,
+    setProgress,
     volume,
     loop,
     detune,
     playbackRate,
-    decodeAudioData,
     updateDuration,
-    playBufferSource,
-    playMediaElementSource,
-    playMediaStreamSource,
+    playBuffer,
     play,
     pause,
     resume,
     stop,
-    onByteTimeDomainData: (fn: (array: Uint8Array<ArrayBuffer>) => void) => {
+    onByteTimeDomainData: (fn: (array: Uint8Array) => void) => {
       _onByteTimeDomainDataFn = fn
     },
+    dispose,
   }
 }

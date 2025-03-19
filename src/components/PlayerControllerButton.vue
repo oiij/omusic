@@ -7,11 +7,18 @@ const emit = defineEmits<{
   (e: 'click', ev: MouseEvent): void
 }>()
 const icons = {
-  play: 'i-iconamoon-player-play-fill',
-  pause: 'i-iconamoon-player-pause-fill',
-  stop: 'i-iconamoon-player-stop-fill',
-  next: 'i-iconamoon-player-next-fill',
-  prev: 'i-iconamoon-player-previous-fill',
+  'play': 'i-iconamoon-player-play-fill',
+  'pause': 'i-iconamoon-player-pause-fill',
+  'stop': 'i-iconamoon-player-stop-fill',
+  'next': 'i-iconamoon-player-next-fill',
+  'prev': 'i-iconamoon-player-previous-fill',
+  'volume-up': 'i-iconamoon-volume-up-fill',
+  'volume-down': 'i-iconamoon-volume-down-fill',
+  'volume-off': 'i-iconamoon-volume-off-fill',
+  'repeat': 'i-iconamoon-playlist-repeat-list-bold',
+  'repeat-one': 'i-iconamoon-playlist-repeat-song-bold',
+  'shuffle': 'i-iconamoon-playlist-shuffle-bold',
+  'play-list': 'i-iconamoon-playlist-bold',
 }
 const fontSize = computed(() => {
   return size / 2
