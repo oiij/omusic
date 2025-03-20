@@ -147,6 +147,7 @@ declare global {
   const useAsyncState: typeof import('@vueuse/core')['useAsyncState']
   const useAttrs: typeof import('vue')['useAttrs']
   const useAudioContext: typeof import('./src/composables/useAudioContext')['useAudioContext']
+  const useAudioVisualization: typeof import('./src/composables/useAudioVisualization')['useAudioVisualization']
   const useAutoRouter: typeof import('./src/composables/useAutoRouter')['useAutoRouter']
   const useBase64: typeof import('@vueuse/core')['useBase64']
   const useBattery: typeof import('@vueuse/core')['useBattery']
@@ -487,6 +488,7 @@ declare module 'vue' {
     readonly useAsyncState: UnwrapRef<typeof import('@vueuse/core')['useAsyncState']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useAudioContext: UnwrapRef<typeof import('./src/composables/useAudioContext')['useAudioContext']>
+    readonly useAudioVisualization: UnwrapRef<typeof import('./src/composables/useAudioVisualization')['useAudioVisualization']>
     readonly useAutoRouter: UnwrapRef<typeof import('./src/composables/useAutoRouter')['useAutoRouter']>
     readonly useBase64: UnwrapRef<typeof import('@vueuse/core')['useBase64']>
     readonly useBattery: UnwrapRef<typeof import('@vueuse/core')['useBattery']>

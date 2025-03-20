@@ -1,7 +1,7 @@
 import type { IAudioMetadata, IPicture } from 'music-metadata'
-import { basename } from '@tauri-apps/api/path'
+import { basename, join } from '@tauri-apps/api/path'
 import { open } from '@tauri-apps/plugin-dialog'
-import { readFile } from '@tauri-apps/plugin-fs'
+import { readDir, readFile } from '@tauri-apps/plugin-fs'
 import { Store } from '@tauri-apps/plugin-store'
 import { parseBuffer } from 'music-metadata'
 
@@ -24,6 +24,7 @@ export interface MediaLibrary {
     picture?: IPicture
   }
 }
+const extensions = ['mp3', 'ape', 'flac']
 export async function useMediaLibrary() {
   const store = await Store.load('library.bin')
   async function has(key: string) {
@@ -59,20 +60,7 @@ export async function useMediaLibrary() {
   async function save() {
     return store.save()
   }
-  async function addMediaLibrary() {
-    const paths = await open({
-      multiple: true,
-      filters: [
-        {
-          name: '音频文件',
-          extensions: ['mp3'],
-        },
-      ],
-    })
-
-    if (!paths || paths.length === 0)
-      return
-
+  async function addMediaLibrary(paths: string[]) {
     const widthFilter = await Promise.all(paths.map(async (m) => {
       return {
         path: m,
@@ -114,6 +102,34 @@ export async function useMediaLibrary() {
       await set(item.path, item)
     }
   }
+  async function openFiles() {
+    const paths = await open({
+      multiple: true,
+      filters: [
+        {
+          name: '音频文件',
+          extensions,
+        },
+      ],
+    })
+
+    if (!paths || paths.length === 0)
+      return
+    await addMediaLibrary(paths)
+  }
+  async function openDirectory() {
+    const directoryPath = await open({
+      directory: true,
+    })
+    if (!directoryPath)
+      return
+    const entries = await readDir(directoryPath)
+    const names = entries.filter(f => f.isFile).map(f => f.name)
+    const filterNames = names.filter(f => extensions.some(s => f.endsWith(`.${s}`)))
+    const filePaths = await Promise.all(filterNames.map(f => join(directoryPath, f)))
+
+    await addMediaLibrary(filePaths)
+  }
   async function removeMediaLibrary(key: string) {
     return store.delete(key)
   }
@@ -126,6 +142,8 @@ export async function useMediaLibrary() {
     clear,
     save,
     addMediaLibrary,
+    openFiles,
+    openDirectory,
     removeMediaLibrary,
   }
 }

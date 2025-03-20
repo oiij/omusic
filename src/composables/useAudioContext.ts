@@ -5,9 +5,11 @@ function formatTime(seconds: number) {
 }
 interface Options {
   analyser?: boolean
+  volume?: number
 }
 export function useAudioContext(options?: Options) {
-  const { analyser = false } = options ?? {}
+  const { analyser = false, volume: defaultVolume = 80 } = options ?? {}
+
   const audioContext = new AudioContext()
   const audioBuffer = shallowRef<AudioBuffer>()
   const bufferSource = shallowRef<AudioBufferSourceNode>()
@@ -40,15 +42,9 @@ export function useAudioContext(options?: Options) {
   const progressRaw = ref(0)
   const progress = computed(() => Number(progressRaw.value.toFixed(0)))
 
-  const volume = ref(gainNode.gain.value * 100)
+  const volume = ref(defaultVolume ?? gainNode.gain.value * 100)
   watch(volume, (val) => {
     gainNode.gain.value = val / 100
-  })
-
-  const loop = ref(bufferSource.value?.loop ?? false)
-  watch(loop, (val) => {
-    if (bufferSource.value)
-      bufferSource.value.loop = val
   })
 
   const detune = ref(bufferSource.value?.detune.defaultValue ?? 0) // 音调
@@ -64,6 +60,8 @@ export function useAudioContext(options?: Options) {
   })
 
   let _onByteTimeDomainDataFn: ((array: Uint8Array) => void) | null = null
+  let _onEndedFn: (() => void) | null = null
+
   function getByteTimeDomainData() {
     analyserNode.getByteTimeDomainData(unit8Array)
     if (typeof _onByteTimeDomainDataFn === 'function') {
@@ -80,6 +78,9 @@ export function useAudioContext(options?: Options) {
     if (_currentTime >= durationRaw.value) {
       playing.value = false
       ended.value = true
+      if (typeof _onEndedFn === 'function') {
+        _onEndedFn()
+      }
       return
     }
     currentTimeRaw.value = _currentTime
@@ -179,7 +180,6 @@ export function useAudioContext(options?: Options) {
     progress,
     setProgress,
     volume,
-    loop,
     detune,
     playbackRate,
     updateDuration,
@@ -192,5 +192,8 @@ export function useAudioContext(options?: Options) {
       _onByteTimeDomainDataFn = fn
     },
     dispose,
+    onEnded: (fn: () => void) => {
+      _onEndedFn = fn
+    },
   }
 }

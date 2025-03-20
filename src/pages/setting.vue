@@ -62,6 +62,11 @@ const colorModeOptions: SelectOption[] = [
 
 <template>
   <div class="flex-col gap-[10px] p-[20px]">
+    <div class="w-full flex">
+      <h1 class="text-[28px]">
+        {{ $t('SETTING.TITLE') }}
+      </h1>
+    </div>
     <CardItem title="通用">
       <n-form-item label="语言">
         <n-select v-model:value="language" class="w-[260px]!" :options="localesOptions" />

@@ -1,13 +1,8 @@
 {
-  "GLOBAL": {
-    "MENU": {
-      "HOME": "Home",
-      "SETTING": "Setting"
-    }
-  },
-  "Hello": "Hello World !",
   "MEDIA": {
     "TITLE": "MediaLibrary"
   },
-  "Welcome": "Welcome Use This Template"
+  "SETTING": {
+    "TITLE": "Setting"
+  }
 }

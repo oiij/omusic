@@ -7,7 +7,6 @@ import { router, useLanguage } from '~/modules'
 export const useAppStore = defineStore(
   'appStore',
   () => {
-    const player = usePlayer()
     const { locale, language } = useLanguage()
     const { isDark, preferredDark, colorMode } = useTheme()
     const { color, theme, themeOverrides, locale: naiveLocal, dateLocale } = useNaiveTheme(isDark, locale)
@@ -24,7 +23,6 @@ export const useAppStore = defineStore(
     }
     init()
     return {
-      ...player,
       locale,
       language,
       isDark,

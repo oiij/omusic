@@ -41,6 +41,12 @@
     "websocket:default",
     "dialog:default",
     "fs:default",
+    {
+      "identifier":"fs:scope",
+      "allow": [
+        "**"
+      ]
+    },
     "notification:default",
     "os:default"
   ]
