@@ -12,12 +12,14 @@ const emit = defineEmits<{
   (e: 'add', ev: MouseEvent): void
   (e: 'remove', ev: MouseEvent): void
 }>()
+const picture = computed(() => data.tag.picture?.data)
 </script>
 
 <template>
   <div class="w-full flex-y-center gap-[10px] rounded-[10px] bg-transparent p-[5px] transition-base hover:bg-black/5">
-    <div class="h-[48px] w-[48px] flex items-center justify-center overflow-hidden rounded-[10px] bg-white/50">
-      <img v-array-buffer-src="data.tag.picture?.data" class="wh-full object-cover">
+    <div class="h-[48px] w-[48px] flex items-center justify-center overflow-hidden rounded-[10px] bg-black/10">
+      <img v-if="picture" v-array-buffer-src="picture" class="wh-full object-cover">
+      <i v-else class="i-iconamoon-music-2-fill text-[20px] text-black/30" />
     </div>
     <div class="min-w-0 flex-col flex-1">
       <div class="truncate text-[16px]">
@@ -26,9 +28,9 @@ const emit = defineEmits<{
       <div class="flex-y-center gap-[3px] truncate text-[12px] text-gray-5">
         <span>{{ data.tag.album }}</span>
         <span>-</span>
-        <div>
+        <span>
           <span v-for="(item, index) in data.tag.artists" :key="index">{{ item }}</span>
-        </div>
+        </span>
       </div>
     </div>
     <div class="flex-y-center">

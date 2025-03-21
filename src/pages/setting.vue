@@ -62,7 +62,10 @@ const colorModeOptions: SelectOption[] = [
 
 <template>
   <div class="flex-col gap-[10px] p-[20px]">
-    <div class="w-full flex">
+    <div class="w-full flex-y-center gap-[10px]">
+      <NButton circle quaternary @click="$router.back()">
+        <i class="i-iconamoon-arrow-left-2-bold text-[20px]" />
+      </NButton>
       <h1 class="text-[28px]">
         {{ $t('SETTING.TITLE') }}
       </h1>

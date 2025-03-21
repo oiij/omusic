@@ -12,7 +12,7 @@ definePage({
   },
 })
 
-const { mediaLibrary, handleAddMedia, handleAddDirectory, handleRemoveMedia, handleClearMedia, handlePlay } = usePlayer()
+const { mediaLibrary, mediaLoading, handleAddMedia, handleAddDirectory, handleRemoveMedia, handleClearMedia, handlePlay } = usePlayer()
 </script>
 
 <template>
@@ -37,13 +37,15 @@ const { mediaLibrary, handleAddMedia, handleAddDirectory, handleRemoveMedia, han
       </NButton>
     </div>
     <div class="min-h-0 flex-1">
-      <NScrollbar>
-        <div class="flex-col gap-[10px]">
-          <div v-for="item in mediaLibrary" :key="item.path">
-            <MediaItem :data="item" @play="() => handlePlay(item)" @remove="() => handleRemoveMedia(item.path)" />
+      <NSpin class="wh-full" content-class="wh-full" :show="mediaLoading">
+        <NScrollbar>
+          <div class="flex-col gap-[10px]">
+            <div v-for="item in mediaLibrary" :key="item.path">
+              <MediaItem :data="item" @play="() => handlePlay(item)" @remove="() => handleRemoveMedia(item.path)" />
+            </div>
           </div>
-        </div>
-      </NScrollbar>
+        </NScrollbar>
+      </NSpin>
     </div>
   </div>
 </template>

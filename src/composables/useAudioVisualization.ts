@@ -19,10 +19,8 @@ export function useAudioVisualization(options?: Options) {
 
   function render() {
     if (domRef.value && canRender.value) {
-      if (!canvas.value) {
-        canvas.value = document.createElement('canvas')
-        domRef.value.appendChild(canvas.value)
-      }
+      canvas.value = document.createElement('canvas')
+      domRef.value.appendChild(canvas.value)
       canvas.value.width = width.value
       canvas.value.height = height.value
     }
@@ -33,7 +31,7 @@ export function useAudioVisualization(options?: Options) {
   watch(() => [width.value, height.value], () => {
     render()
   })
-  onBeforeUnmount(() => {
+  onUnmounted(() => {
     if (canvas.value) {
       domRef.value?.removeChild(canvas.value)
       canvas.value = undefined

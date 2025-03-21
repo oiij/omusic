@@ -2888,6 +2888,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "omusic"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-autostart",
+ "tauri-plugin-clipboard-manager",
+ "tauri-plugin-dialog",
+ "tauri-plugin-fs",
+ "tauri-plugin-global-shortcut",
+ "tauri-plugin-http",
+ "tauri-plugin-notification",
+ "tauri-plugin-os",
+ "tauri-plugin-positioner",
+ "tauri-plugin-process",
+ "tauri-plugin-shell",
+ "tauri-plugin-store",
+ "tauri-plugin-updater",
+ "tauri-plugin-upload",
+ "tauri-plugin-websocket",
+]
+
+[[package]]
 name = "once_cell"
 version = "1.20.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4783,31 +4808,6 @@ dependencies = [
  "webview2-com",
  "windows 0.58.0",
  "wry",
-]
-
-[[package]]
-name = "tauri-starter"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-autostart",
- "tauri-plugin-clipboard-manager",
- "tauri-plugin-dialog",
- "tauri-plugin-fs",
- "tauri-plugin-global-shortcut",
- "tauri-plugin-http",
- "tauri-plugin-notification",
- "tauri-plugin-os",
- "tauri-plugin-positioner",
- "tauri-plugin-process",
- "tauri-plugin-shell",
- "tauri-plugin-store",
- "tauri-plugin-updater",
- "tauri-plugin-upload",
- "tauri-plugin-websocket",
 ]
 
 [[package]]

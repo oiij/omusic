@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div class="wh-full flex-col">
-    <main>
+  <div class="wh-full">
+    <main class="wh-full p-b-[40px]">
       <RouterEntry />
     </main>
     <Player />

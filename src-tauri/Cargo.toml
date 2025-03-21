@@ -1,5 +1,5 @@
 [package]
-name = "tauri-starter"
+name = "omusic"
 version = "0.1.0"
 description = "A Tauri App"
 authors = [ "you" ]
@@ -8,7 +8,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
-name = "tauri_starter_lib"
+name = "omusic_lib"
 crate-type = [
   "staticlib",
   "cdylib",

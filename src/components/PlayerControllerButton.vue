@@ -26,7 +26,7 @@ const fontSize = computed(() => {
 </script>
 
 <template>
-  <div class="flex cursor-pointer items-center justify-center border border-[2px] rounded-full transition-base hover:bg-black/10" :style="{ width: `${size}px`, height: `${size}px` }" @click="emit('click', $event)">
+  <div class="flex cursor-pointer items-center justify-center border border-[2px] border-black/5 rounded-full transition-base hover:bg-black/10" :style="{ width: `${size}px`, height: `${size}px` }" @click="emit('click', $event)">
     <i :class="icons[name]" :style="{ fontSize: `${fontSize}px` }" />
   </div>
 </template>

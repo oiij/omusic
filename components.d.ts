@@ -21,6 +21,7 @@ declare module 'vue' {
     NScrollbar: typeof import('naive-ui')['NScrollbar']
     NSelect: typeof import('naive-ui')['NSelect']
     NSlider: typeof import('naive-ui')['NSlider']
+    NSpin: typeof import('naive-ui')['NSpin']
     Player: typeof import('./src/components/Player.vue')['default']
     PlayerControllerButton: typeof import('./src/components/PlayerControllerButton.vue')['default']
     ProgressBar: typeof import('./src/components/ProgressBar.vue')['default']
